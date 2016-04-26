@@ -5,8 +5,6 @@ import io.gatling.http.Predef._
 import scala.concurrent.duration._
 
 class SearchUser extends Simulation {
-  val resourceDir = "/Users/jeanbombeur/Desktop/workspace/gatling/src/main/resources"
-
   val httpConf = http // 4
     .baseURL("http://frontend.preproduction.keljob.internal") // 5
     .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8") // 6
@@ -15,14 +13,14 @@ class SearchUser extends Simulation {
     .acceptEncodingHeader("gzip, deflate")
     .userAgentHeader("Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0")
 
-  val wordsFeeder = csv(s"$resourceDir/recherches.txt").random
+  val wordsFeeder = csv(s"recherches.txt").random
   val searchScenario = scenario("SearchUser")
     .feed(wordsFeeder)
     .exec(
       http("search").get("/recherche?q=${word}")
     )
 
-  val offerFeeder = csv(s"$resourceDir/offres.txt").random
+  val offerFeeder = csv(s"offres.txt").random
   val viewScenario = scenario("FcaUser")
       .feed(offerFeeder)
         .exec(
